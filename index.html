@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> 愛品 </title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0057ff">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+<style>
+
+body{
+text-align:center;
+font-family:sans-serif;
+margin-top:30px;
+background:white;
+background-image: radial-gradient(#ffd800 2px, transparent 2px);
+background-size:20px 20px;
+}
+
+.card{
+width:340px;
+margin:auto;
+padding:20px;
+background:white;
+border-radius:20px;
+border:6px solid #0057ff;
+box-shadow:0 6px 15px rgba(0,0,0,0.2);
+}
+
+.logo{
+width:90px;
+height:90px;
+margin:auto;
+border-radius:50%;
+background:#ffd800;
+border:6px solid #0057ff;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.logo span{
+font-size:48px;
+font-weight:bold;
+color:white;
+-webkit-text-stroke:3px red;
+}
+
+.shop{
+font-size:26px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.member{
+margin-top:15px;
+font-size:16px;
+}
+
+.number{
+font-size:22px;
+font-weight:bold;
+margin:10px;
+}
+
+input{
+font-size:20px;
+padding:10px;
+width:220px;
+text-align:center;
+border:2px solid #0057ff;
+border-radius:8px;
+}
+
+button{
+font-size:18px;
+padding:10px 18px;
+margin:8px;
+background:#ff2a2a;
+color:white;
+border:none;
+border-radius:10px;
+}
+
+.barcodebox{
+width:100%;
+overflow:hidden;
+margin-top:20px;
+}
+
+#barcode{
+width:100%;
+}
+
+.footer{
+margin-top:15px;
+font-size:14px;
+background:#ffd800;
+padding:6px;
+border-radius:8px;
+}
+
+.message{
+margin-top:15px;
+font-size:16px;
+background:#fff3cd;
+padding:10px;
+border-radius:10px;
+}
+
+/* 管理ボタン（目立たせない） */
+.admin{
+font-size:12px;
+background:gray;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="logo">
+<span>愛</span>
+</div>
+
+<div class="shop">ポイントカード</div>
+
+<div class="member">会員番号</div>
+
+<div class="number" id="showNumber"></div>
+
+<div id="inputArea">
+<input id="number" placeholder="10桁番号">
+<br>
+<button onclick="saveCard()">登録</button>
+</div>
+
+<div class="barcodebox">
+<svg id="barcode"></svg>
+</div>
+
+<div class="message">
+<span id="msg">メッセージはありません</span>
+</div>
+
+<div id="staffMsgArea" style="display:none;">
+<input id="msgInput" placeholder="メッセージ入力">
+<br>
+<button onclick="saveMsg()">保存</button>
+</div>
+
+<button onclick="openMsg()">メッセージ編集</button>
+
+<!-- 管理ボタン -->
+<button class="admin" onclick="resetCard()">管理</button>
+
+<div class="footer">
+お買い上げ金額に応じてポイントが付きます
+</div>
+
+</div>
+
+<script>
+
+window.onload=function(){
+
+let saved=localStorage.getItem("card")
+
+if(saved){
+document.getElementById("showNumber").innerText=saved
+drawBarcode(saved)
+document.getElementById("inputArea").style.display="none"
+}
+
+let msg = localStorage.getItem("msg") || "メッセージはありません"
+document.getElementById("msg").innerText = msg
+
+}
+
+function saveCard(){
+
+let num=document.getElementById("number").value
+
+if(num==""){
+alert("番号を入力してください")
+return
+}
+
+localStorage.setItem("card",num)
+document.getElementById("showNumber").innerText=num
+drawBarcode(num)
+document.getElementById("inputArea").style.display="none"
+
+}
+
+function openMsg(){
+
+let pass = prompt("パスコードを入力")
+
+if(pass === "1234"){
+document.getElementById("staffMsgArea").style.display="block"
+}else{
+alert("パスコードが違います")
+}
+
+}
+
+function saveMsg(){
+
+let msg = document.getElementById("msgInput").value
+
+localStorage.setItem("msg", msg)
+document.getElementById("msg").innerText = msg
+document.getElementById("staffMsgArea").style.display="none"
+
+}
+
+/* 🔥 ここが追加された管理機能 */
+function resetCard(){
+
+let pass = prompt("パスコードを入力")
+
+if(pass === "1234"){
+
+localStorage.removeItem("card")
+
+document.getElementById("showNumber").innerText=""
+document.getElementById("barcode").innerHTML=""
+
+// 入力欄復活
+document.getElementById("inputArea").style.display="block"
+
+}else{
+
+alert("パスコードが違います")
+
+}
+
+}
+
+function drawBarcode(num){
+
+JsBarcode("#barcode", num, {
+format:"CODE39",
+width:1.8,
+height:80,
+displayValue:false,
+margin:0
+})
+
+}
+
+</script>
+
+</body>
+</html>

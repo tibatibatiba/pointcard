@@ -16,8 +16,8 @@ text-align:center;
 font-family:sans-serif;
 margin-top:30px;
 background:white;
-background-image: radial-gradient(#ffd800 2px, transparent 2px);
-background-size:20px 20px;
+background-image: radial-gradient(#ffd800 5px, transparent 5px);
+background-size:30px 30px;
 }
 
 .card{
@@ -106,17 +106,52 @@ border-radius:8px;
 .message{
 margin-top:15px;
 font-size:16px;
-background:#fff3cd;
+background:##f5f5f5;
 padding:10px;
 border-radius:10px;
 }
 
-/* 管理ボタン（目立たせない） */
 .admin{
 font-size:12px;
 background:gray;
 }
 
+.line-btn{
+background:#06C755;
+color:white;
+font-size:18px;
+padding:12px;
+width:90%;
+border:none;
+border-radius:30px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+transition:0.2s;
+}
+
+.line-btn:active{
+transform:scale(0.95);
+box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+ 
+.web-btn{
+background:linear-gradient(135deg,#0057ff,#003bb5);
+color:white;
+font-size:18px;
+padding:12px;
+width:90%;
+border:none;
+border-radius:30px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+transition:0.2s;
+}
+
+.web-btn:active{
+transform:scale(0.95);
+box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+
+ 
+  
 </style>
 
 </head>
@@ -149,16 +184,27 @@ background:gray;
 <span id="msg">メッセージはありません</span>
 </div>
 
+<!-- メッセージ入力 -->
 <div id="staffMsgArea" style="display:none;">
-<input id="msgInput" placeholder="メッセージ入力">
+<input id="msgInput" placeholder="メッセージ">
 <br>
 <button onclick="saveMsg()">保存</button>
 </div>
 
-<button onclick="openMsg()">メッセージ編集</button>
+<button onclick="openMsgArea()">メッセージ入力</button>
 
 <!-- 管理ボタン -->
 <button class="admin" onclick="resetCard()">管理</button>
+
+<!-- 外部リンク -->
+<div style="margin-top:15px;">
+<button onclick="goLine()" class="line-btn">
+💬 千葉公式LINEはこちら
+</button>
+<button onclick="goWeb()" class="web-btn">
+🌐 ホームページはこちら
+</button>
+</div>
 
 <div class="footer">
 お買い上げ金額に応じてポイントが付きます
@@ -199,16 +245,8 @@ document.getElementById("inputArea").style.display="none"
 
 }
 
-function openMsg(){
-
-let pass = prompt("パスコードを入力")
-
-if(pass === "1234"){
+function openMsgArea(){
 document.getElementById("staffMsgArea").style.display="block"
-}else{
-alert("パスコードが違います")
-}
-
 }
 
 function saveMsg(){
@@ -221,7 +259,6 @@ document.getElementById("staffMsgArea").style.display="none"
 
 }
 
-/* 🔥 ここが追加された管理機能 */
 function resetCard(){
 
 let pass = prompt("パスコードを入力")
@@ -232,8 +269,6 @@ localStorage.removeItem("card")
 
 document.getElementById("showNumber").innerText=""
 document.getElementById("barcode").innerHTML=""
-
-// 入力欄復活
 document.getElementById("inputArea").style.display="block"
 
 }else{
@@ -254,6 +289,16 @@ displayValue:false,
 margin:0
 })
 
+}
+
+function goLine(){
+window.open("https://page.line.me/hac4418i", "_blank")
+}
+
+ 
+
+function goWeb(){
+window.open("https://www.aihin.co.jp/chiba/", "_blank")
 }
 
 </script>
